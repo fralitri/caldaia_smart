@@ -5,6 +5,5 @@
   "documentation": "https://github.com/fralitri/caldaia_smart",
   "dependencies": [],
   "codeowners": ["@fralitri"],
-  "requirements": [],
-  "config_flow": true
+  "requirements": []
 }
