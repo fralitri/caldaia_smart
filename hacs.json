@@ -1,0 +1,6 @@
+{
+  "name": "Caldaia Smart",
+  "render_readme": true,
+  "domains": ["sensor"],
+  "homeassistant": "2021.12.0"
+}
