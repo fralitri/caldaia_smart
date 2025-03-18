@@ -1,0 +1,1 @@
+# caldaia_smart
