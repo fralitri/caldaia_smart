@@ -1,59 +1,32 @@
-import logging
 from homeassistant.helpers.entity import Entity
-from homeassistant.const import POWER_WATT
+from .const import DOMAIN
 
-_LOGGER = logging.getLogger(__name__)
-
-def setup_platform(hass, config, add_entities, discovery_info=None):
-    """Set up the sensor platform."""
-    if discovery_info is None:
-        _LOGGER.error("Questa integrazione deve essere configurata tramite YAML.")
-        return
-
-    power_sensor = discovery_info.get("power_sensor")
-    thresholds = {
-        "standby": discovery_info.get("standby_threshold", 20),
-        "acs": discovery_info.get("acs_threshold", 60),
-        "circolatore": discovery_info.get("circolatore_threshold", 100),
-        "riscaldamento": discovery_info.get("riscaldamento_threshold", 140)
-    }
-
-    # Verifica che il sensore di potenza esista
-    if not hass.states.get(power_sensor):
-        _LOGGER.error(f"Sensore di potenza non trovato: {power_sensor}")
-        return
-
-    add_entities([CaldaiaSmartSensor(power_sensor, thresholds)])
+async def async_setup_entry(hass, config_entry, async_add_entities):
+    config = config_entry.data
+    sensors = [
+        CaldaiaSmartSensor(config["device_name"], "ACS Temperature", config["acs_temp"]),
+        CaldaiaSmartSensor(config["device_name"], "AFS Temperature", config["afs_temp"]),
+        CaldaiaSmartSensor(config["device_name"], "Mandata Temperature", config["mandata_temp"]),
+        CaldaiaSmartSensor(config["device_name"], "Ritorno Temperature", config["ritorno_temp"]),
+        CaldaiaSmartSensor(config["device_name"], "Fumi Temperature", config["fumi_temp"]),
+        CaldaiaSmartSensor(config["device_name"], "Consumo Caldaia", config["consumo_caldaia"]),
+    ]
+    async_add_entities(sensors)
 
 class CaldaiaSmartSensor(Entity):
-    """Rappresentazione di un sensore per la Caldaia Smart."""
-
-    def __init__(self, power_sensor, thresholds):
-        """Inizializza il sensore."""
-        self._power_sensor = power_sensor
-        self._thresholds = thresholds
+    def __init__(self, device_name, sensor_type, entity_id):
+        self._device_name = device_name
+        self._sensor_type = sensor_type
+        self._entity_id = entity_id
         self._state = None
 
     @property
     def name(self):
-        """Restituisce il nome del sensore."""
-        return "Stato Caldaia"
+        return f"{self._device_name} {self._sensor_type}"
 
     @property
     def state(self):
-        """Restituisce lo stato del sensore."""
         return self._state
 
-    def update(self):
-        """Aggiorna lo stato del sensore."""
-        power = float(self.hass.states.get(self._power_sensor).state)
-        if power <= self._thresholds["standby"]:
-            self._state = "Standby"
-        elif power <= self._thresholds["acs"]:
-            self._state = "ACS"
-        elif power <= self._thresholds["circolatore"]:
-            self._state = "Circolatore"
-        elif power <= self._thresholds["riscaldamento"]:
-            self._state = "Riscaldamento"
-        else:
-            self._state = "Errore"
+    async def async_update(self):
+        self._state = self.hass.states.get(self._entity_id).state
