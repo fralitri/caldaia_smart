@@ -2,6 +2,7 @@ from homeassistant.helpers.entity import Entity
 from .const import DOMAIN
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
+    """Set up the sensors from a config entry."""
     config = config_entry.data
     sensors = [
         CaldaiaSmartSensor(config["device_name"], "ACS Temperature", config["acs_temp"]),
