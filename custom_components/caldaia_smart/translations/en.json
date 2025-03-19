@@ -1,0 +1,15 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "device_name": "Device Name",
+        "acs_temp": "ACS Temperature Sensor",
+        "afs_temp": "AFS Temperature Sensor",
+        "mandata_temp": "Mandata Temperature Sensor",
+        "ritorno_temp": "Ritorno Temperature Sensor",
+        "fumi_temp": "Fumi Temperature Sensor",
+        "consumo_caldaia": "Consumo Caldaia Sensor"
+      }
+    }
+  }
+}
