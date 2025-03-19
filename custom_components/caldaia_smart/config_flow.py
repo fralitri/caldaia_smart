@@ -10,12 +10,15 @@ class CaldaiaSmartConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_user(self, user_input=None):
         errors = {}
         if user_input is not None:
+            # Salva i dati inseriti dall'utente
             return self.async_create_entry(title=user_input["device_name"], data=user_input)
 
+        # Recupera tutti i sensori disponibili
         sensors = self.hass.states.async_entity_ids("sensor")
         temperature_sensors = [s for s in sensors if "temperature" in s]
         power_sensors = [s for s in sensors if "power" in s]
 
+        # Mostra il form all'utente
         return self.async_show_form(
             step_id="user",
             data_schema=vol.Schema({
