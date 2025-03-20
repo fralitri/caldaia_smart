@@ -4,7 +4,7 @@ from homeassistant.core import callback
 from .const import DOMAIN, CONF_NAME, CONF_TEMP_ACS, CONF_TEMP_ACF, CONF_TEMP_MANDATA, CONF_TEMP_RITORNO, CONF_TEMP_FUMI, CONF_CONSUMO_ELETTRICO
 
 class CaldaiaSmartConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for Caldaia Smart Integration."""
+    """Handle a config flow for Caldaia Smart."""
 
     async def async_step_user(self, user_input=None):
         """Handle the initial step."""
@@ -40,7 +40,7 @@ class CaldaiaSmartConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         return CaldaiaSmartOptionsFlow(config_entry)
 
 class CaldaiaSmartOptionsFlow(config_entries.OptionsFlow):
-    """Handle options flow for Caldaia Smart Integration."""
+    """Handle options flow for Caldaia Smart."""
 
     def __init__(self, config_entry):
         """Initialize options flow."""
