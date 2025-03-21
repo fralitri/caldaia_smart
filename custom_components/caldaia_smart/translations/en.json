@@ -2,14 +2,24 @@
   "config": {
     "step": {
       "user": {
-        "device_name": "Device Name",
-        "acs_temp": "ACS Temperature Sensor",
-        "afs_temp": "AFS Temperature Sensor",
-        "mandata_temp": "Mandata Temperature Sensor",
-        "ritorno_temp": "Ritorno Temperature Sensor",
-        "fumi_temp": "Fumi Temperature Sensor",
-        "consumo_caldaia": "Consumo Caldaia Sensor"
+        "title": "Caldaia Smart Configuration",
+        "description": "Configure your boiler sensors.",
+        "data": {
+          "name": "Boiler name",
+          "temp_acs": "ACS Temperature",
+          "temp_acf": "ACF Temperature",
+          "temp_mandata": "Supply Temperature",
+          "temp_ritorno": "Return Temperature",
+          "temp_fumi": "Flue Gas Temperature",
+          "consumo_elettrico": "Power Consumption"
+        }
       }
+    },
+    "abort": {
+      "already_configured": "This boiler is already configured."
+    },
+    "error": {
+      "name_required": "Boiler name is required."
     }
   }
 }
