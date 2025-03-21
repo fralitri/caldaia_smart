@@ -2,8 +2,10 @@
 
 Questa integrazione permette di raggruppare i sensori di una caldaia (ad esempio, temperatura ACS, ACF, mandata, ritorno, fumi e consumo elettrico) sotto un unico dispositivo logico in Home Assistant.
 
-## Installazione
-1. Aggiungi questo repository a HACS.
+## Installazione tramite HACS
+1. Aggiungi questo repository a HACS:
+   - Vai su **HACS > Integrations > Explore & Add Repositories**.
+   - Cerca `fralitri/caldaia_smart` e aggiungilo.
 2. Installa l'integrazione "Caldaia Smart".
 3. Configura l'integrazione tramite l'interfaccia grafica di Home Assistant.
 
