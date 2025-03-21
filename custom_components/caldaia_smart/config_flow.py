@@ -29,27 +29,27 @@ class CaldaiaSmartConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 ): str,
                 vol.Required(
                     CONF_TEMP_ACS,
-                    description={"it": "Seleziona il sensore per la temperatura dell'acqua calda sanitaria (ACS).", "en": "Select the sensor for the ACS temperature."}
+                    description={"it": "Seleziona il sensore per la Temperatura Acqua Calda Sanitaria.", "en": "Select the sensor for the Hot Water Temperature."}
                 ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
                 vol.Required(
                     CONF_TEMP_ACF,
-                    description={"it": "Seleziona il sensore per la temperatura dell'acqua fredda sanitaria (ACF).", "en": "Select the sensor for the ACF temperature."}
+                    description={"it": "Seleziona il sensore per la Temperatura Acqua Fredda Sanitaria.", "en": "Select the sensor for the Cold Water Temperature."}
                 ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
                 vol.Required(
                     CONF_TEMP_MANDATA,
-                    description={"it": "Seleziona il sensore per la temperatura di mandata del riscaldamento.", "en": "Select the sensor for the supply temperature."}
+                    description={"it": "Seleziona il sensore per la Temperatura Mandata Riscaldamento.", "en": "Select the sensor for the Heating Supply Temperature."}
                 ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
                 vol.Required(
                     CONF_TEMP_RITORNO,
-                    description={"it": "Seleziona il sensore per la temperatura di ritorno del riscaldamento.", "en": "Select the sensor for the return temperature."}
+                    description={"it": "Seleziona il sensore per la Temperatura Ritorno Riscaldamento.", "en": "Select the sensor for the Heating Return Temperature."}
                 ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
                 vol.Required(
                     CONF_TEMP_FUMI,
-                    description={"it": "Seleziona il sensore per la temperatura dei fumi.", "en": "Select the sensor for the flue gas temperature."}
+                    description={"it": "Seleziona il sensore per la Temperatura Fumi Caldaia.", "en": "Select the sensor for the Flue Gas Temperature."}
                 ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
                 vol.Required(
                     CONF_CONSUMO_ELETTRICO,
-                    description={"it": "Seleziona il sensore per il consumo elettrico.", "en": "Select the sensor for the power consumption."}
+                    description={"it": "Seleziona il sensore per il Consumo Elettrico Caldaia.", "en": "Select the sensor for the Boiler Power Consumption."}
                 ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
             }),
             errors=errors,
@@ -79,32 +79,32 @@ class CaldaiaSmartOptionsFlow(config_entries.OptionsFlow):
                 vol.Optional(
                     CONF_TEMP_ACS,
                     default=self.config_entry.data.get(CONF_TEMP_ACS),
-                    description={"it": "Seleziona il sensore per la temperatura dell'acqua calda sanitaria (ACS).", "en": "Select the sensor for the ACS temperature."}
+                    description={"it": "Seleziona il sensore per la Temperatura Acqua Calda Sanitaria.", "en": "Select the sensor for the Hot Water Temperature."}
                 ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
                 vol.Optional(
                     CONF_TEMP_ACF,
                     default=self.config_entry.data.get(CONF_TEMP_ACF),
-                    description={"it": "Seleziona il sensore per la temperatura dell'acqua fredda sanitaria (ACF).", "en": "Select the sensor for the ACF temperature."}
+                    description={"it": "Seleziona il sensore per la Temperatura Acqua Fredda Sanitaria.", "en": "Select the sensor for the Cold Water Temperature."}
                 ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
                 vol.Optional(
                     CONF_TEMP_MANDATA,
                     default=self.config_entry.data.get(CONF_TEMP_MANDATA),
-                    description={"it": "Seleziona il sensore per la temperatura di mandata del riscaldamento.", "en": "Select the sensor for the supply temperature."}
+                    description={"it": "Seleziona il sensore per la Temperatura Mandata Riscaldamento.", "en": "Select the sensor for the Heating Supply Temperature."}
                 ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
                 vol.Optional(
                     CONF_TEMP_RITORNO,
                     default=self.config_entry.data.get(CONF_TEMP_RITORNO),
-                    description={"it": "Seleziona il sensore per la temperatura di ritorno del riscaldamento.", "en": "Select the sensor for the return temperature."}
+                    description={"it": "Seleziona il sensore per la Temperatura Ritorno Riscaldamento.", "en": "Select the sensor for the Heating Return Temperature."}
                 ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
                 vol.Optional(
                     CONF_TEMP_FUMI,
                     default=self.config_entry.data.get(CONF_TEMP_FUMI),
-                    description={"it": "Seleziona il sensore per la temperatura dei fumi.", "en": "Select the sensor for the flue gas temperature."}
+                    description={"it": "Seleziona il sensore per la Temperatura Fumi Caldaia.", "en": "Select the sensor for the Flue Gas Temperature."}
                 ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
                 vol.Optional(
                     CONF_CONSUMO_ELETTRICO,
                     default=self.config_entry.data.get(CONF_CONSUMO_ELETTRICO),
-                    description={"it": "Seleziona il sensore per il consumo elettrico.", "en": "Select the sensor for the power consumption."}
+                    description={"it": "Seleziona il sensore per il Consumo Elettrico Caldaia.", "en": "Select the sensor for the Boiler Power Consumption."}
                 ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
             }),
         )
