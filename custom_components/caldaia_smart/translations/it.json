@@ -1,0 +1,25 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configurazione Caldaia Smart",
+        "description": "Configura i sensori della tua caldaia.",
+        "data": {
+          "name": "Nome della caldaia",
+          "temp_acs": "Temperatura ACS",
+          "temp_acf": "Temperatura ACF",
+          "temp_mandata": "Temperatura di mandata",
+          "temp_ritorno": "Temperatura di ritorno",
+          "temp_fumi": "Temperatura dei fumi",
+          "consumo_elettrico": "Consumo elettrico"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "Questa caldaia è già configurata."
+    },
+    "error": {
+      "name_required": "Il nome della caldaia è obbligatorio."
+    }
+  }
+}
