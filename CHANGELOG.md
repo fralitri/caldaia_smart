@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.3] - 2023-10-25
+### Fixed
+- Corrette le descrizioni dei campi nel form di configurazione:
+  - Temperatura Acqua Calda Sanitaria
+  - Temperatura Acqua Fredda Sanitaria
+  - Temperatura Mandata Riscaldamento
+  - Temperatura Ritorno Riscaldamento
+  - Temperatura Fumi Caldaia
+  - Consumo Elettrico Caldaia
+
 ## [1.0.2] - 2023-10-25
 ### Added
 - Aggiunte traduzioni in italiano per i testi dell'interfaccia utente.
