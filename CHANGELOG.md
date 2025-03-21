@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.6] - 2023-10-30
+### Fixed
+- Correzione della logica di determinazione dello stato Riscaldamento: ora la caldaia è in Riscaldamento solo quando il consumo è compreso tra la soglia Circolatore e la soglia Riscaldamento.
+- Aggiunto uno stato "Massima Potenza" per consumi superiori alla soglia Riscaldamento.
+- Migliorate le descrizioni delle soglie nei file di traduzione e nel README.md.
+
+## [1.0.5] - 2023-10-25
+### Improved
+- Migliorate le descrizioni dei campi di configurazione delle soglie di consumo per renderle più chiare e user-friendly.
+- Aggiunte descrizioni dettagliate nel README.md per la configurazione delle soglie.
+
 ## [1.0.4] - 2023-10-25
 ### Added
 - Aggiunta un'entità di stato per la caldaia, con icone dinamiche e stati personalizzati:
