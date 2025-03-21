@@ -1,6 +1,7 @@
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.core import callback
+from homeassistant.helpers import selector
 from .const import DOMAIN, CONF_NAME, CONF_TEMP_ACS, CONF_TEMP_ACF, CONF_TEMP_MANDATA, CONF_TEMP_RITORNO, CONF_TEMP_FUMI, CONF_CONSUMO_ELETTRICO
 
 class CaldaiaSmartConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -22,13 +23,34 @@ class CaldaiaSmartConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         return self.async_show_form(
             step_id="user",
             data_schema=vol.Schema({
-                vol.Required(CONF_NAME): str,
-                vol.Required(CONF_TEMP_ACS): str,
-                vol.Required(CONF_TEMP_ACF): str,
-                vol.Required(CONF_TEMP_MANDATA): str,
-                vol.Required(CONF_TEMP_RITORNO): str,
-                vol.Required(CONF_TEMP_FUMI): str,
-                vol.Required(CONF_CONSUMO_ELETTRICO): str,
+                vol.Required(
+                    CONF_NAME,
+                    description="Inserisci un nome identificativo per la caldaia."
+                ): str,
+                vol.Required(
+                    CONF_TEMP_ACS,
+                    description="Seleziona il sensore per la temperatura dell'acqua calda sanitaria (ACS)."
+                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
+                vol.Required(
+                    CONF_TEMP_ACF,
+                    description="Seleziona il sensore per la temperatura dell'acqua fredda sanitaria (ACF)."
+                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
+                vol.Required(
+                    CONF_TEMP_MANDATA,
+                    description="Seleziona il sensore per la temperatura di mandata del riscaldamento."
+                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
+                vol.Required(
+                    CONF_TEMP_RITORNO,
+                    description="Seleziona il sensore per la temperatura di ritorno del riscaldamento."
+                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
+                vol.Required(
+                    CONF_TEMP_FUMI,
+                    description="Seleziona il sensore per la temperatura dei fumi."
+                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
+                vol.Required(
+                    CONF_CONSUMO_ELETTRICO,
+                    description="Seleziona il sensore per il consumo elettrico."
+                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
             }),
             errors=errors,
         )
@@ -57,26 +79,32 @@ class CaldaiaSmartOptionsFlow(config_entries.OptionsFlow):
                 vol.Optional(
                     CONF_TEMP_ACS,
                     default=self.config_entry.data.get(CONF_TEMP_ACS),
-                ): str,
+                    description="Seleziona il sensore per la temperatura dell'acqua calda sanitaria (ACS)."
+                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
                 vol.Optional(
                     CONF_TEMP_ACF,
                     default=self.config_entry.data.get(CONF_TEMP_ACF),
-                ): str,
+                    description="Seleziona il sensore per la temperatura dell'acqua fredda sanitaria (ACF)."
+                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
                 vol.Optional(
                     CONF_TEMP_MANDATA,
                     default=self.config_entry.data.get(CONF_TEMP_MANDATA),
-                ): str,
+                    description="Seleziona il sensore per la temperatura di mandata del riscaldamento."
+                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
                 vol.Optional(
                     CONF_TEMP_RITORNO,
                     default=self.config_entry.data.get(CONF_TEMP_RITORNO),
-                ): str,
+                    description="Seleziona il sensore per la temperatura di ritorno del riscaldamento."
+                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
                 vol.Optional(
                     CONF_TEMP_FUMI,
                     default=self.config_entry.data.get(CONF_TEMP_FUMI),
-                ): str,
+                    description="Seleziona il sensore per la temperatura dei fumi."
+                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
                 vol.Optional(
                     CONF_CONSUMO_ELETTRICO,
                     default=self.config_entry.data.get(CONF_CONSUMO_ELETTRICO),
-                ): str,
+                    description="Seleziona il sensore per il consumo elettrico."
+                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
             }),
         )
