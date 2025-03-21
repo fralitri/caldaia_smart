@@ -11,7 +11,11 @@
           "temp_mandata": "Temperatura Mandata Riscaldamento",
           "temp_ritorno": "Temperatura Ritorno Riscaldamento",
           "temp_fumi": "Temperatura Fumi Caldaia",
-          "consumo_elettrico": "Consumo Elettrico Caldaia"
+          "consumo_elettrico": "Consumo Elettrico Caldaia",
+          "standby_threshold": "Soglia Standby (W)",
+          "acs_threshold": "Soglia ACS (W)",
+          "circolatore_threshold": "Soglia Circolatore (W)",
+          "riscaldamento_threshold": "Soglia Riscaldamento (W)"
         }
       }
     },
