@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.4] - 2023-10-25
+### Added
+- Aggiunta un'entità di stato per la caldaia, con icone dinamiche e stati personalizzati:
+  - Standby
+  - ACS
+  - Circolatore
+  - Riscaldamento
+- Configurazione delle soglie di consumo per determinare lo stato della caldaia.
+
 ## [1.0.3] - 2023-10-25
 ### Fixed
 - Corrette le descrizioni dei campi nel form di configurazione:
