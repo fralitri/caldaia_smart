@@ -11,7 +11,11 @@
           "temp_mandata": "Heating Supply Temperature",
           "temp_ritorno": "Heating Return Temperature",
           "temp_fumi": "Flue Gas Temperature",
-          "consumo_elettrico": "Boiler Power Consumption"
+          "consumo_elettrico": "Boiler Power Consumption",
+          "standby_threshold": "Standby Threshold (W)",
+          "acs_threshold": "ACS Threshold (W)",
+          "circolatore_threshold": "Circulator Threshold (W)",
+          "riscaldamento_threshold": "Heating Threshold (W)"
         }
       }
     },
