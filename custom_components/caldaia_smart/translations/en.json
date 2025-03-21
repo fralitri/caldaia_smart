@@ -6,12 +6,12 @@
         "description": "Configure your boiler sensors.",
         "data": {
           "name": "Boiler name",
-          "temp_acs": "ACS Temperature",
-          "temp_acf": "ACF Temperature",
-          "temp_mandata": "Supply Temperature",
-          "temp_ritorno": "Return Temperature",
+          "temp_acs": "Hot Water Temperature",
+          "temp_acf": "Cold Water Temperature",
+          "temp_mandata": "Heating Supply Temperature",
+          "temp_ritorno": "Heating Return Temperature",
           "temp_fumi": "Flue Gas Temperature",
-          "consumo_elettrico": "Power Consumption"
+          "consumo_elettrico": "Boiler Power Consumption"
         }
       }
     },
