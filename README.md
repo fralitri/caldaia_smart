@@ -1,6 +1,6 @@
 # Caldaia Smart Integration
 
-Questa integrazione permette di raggruppare i sensori di una caldaia (ad esempio, temperatura ACS, ACF, mandata, ritorno, fumi e consumo elettrico) sotto un unico dispositivo logico in Home Assistant. Inoltre, include un'entità di stato che indica lo stato attuale della caldaia (Standby, ACS, Circolatore, Riscaldamento) basandosi sul consumo elettrico.
+Questa integrazione permette di raggruppare i sensori di una caldaia (ad esempio, temperatura ACS, ACF, mandata, ritorno, fumi e consumo elettrico) sotto un unico dispositivo logico in Home Assistant. Inoltre, include un'entità di stato che indica lo stato attuale della caldaia (Standby, ACS, Circolatore, Riscaldamento, Massima Potenza) basandosi sul consumo elettrico.
 
 ## Installazione tramite HACS
 1. Aggiungi questo repository a HACS:
@@ -20,18 +20,24 @@ Lo stato della caldaia viene determinato in base al consumo elettrico. Ecco come
 - **Standby**: La caldaia è in standby quando il consumo è inferiore a **20W**.
 - **ACS**: La caldaia è in modalità ACS (acqua calda sanitaria) quando il consumo è compreso tra **20W** e **60W**.
 - **Circolatore**: La caldaia è in modalità Circolatore quando il consumo è compreso tra **60W** e **85W**.
-- **Riscaldamento**: La caldaia è in modalità Riscaldamento quando il consumo supera **85W**.
+- **Riscaldamento**: La caldaia è in modalità Riscaldamento quando il consumo è compreso tra **85W** e **130W**.
+- **Massima Potenza**: La caldaia è in modalità Massima Potenza quando il consumo supera **130W**.
 
 ### Come Scegliere i Valori delle Soglie
-I valori di default sono stati impostati in base ai seguenti consumi tipici:
-- **Standby**: 13,10W → Impostato a **20W** per maggiore sicurezza.
-- **ACS**: 53,80W → Impostato a **60W** per maggiore sicurezza.
-- **Circolatore**: 78,20W → Impostato a **85W** per maggiore sicurezza.
-- **Riscaldamento**: 121,90W → Impostato a **130W** per maggiore sicurezza.
-
-Se i consumi della tua caldaia sono diversi, puoi regolare le soglie nella configurazione dell'integrazione.
+I valori di default sono stati impostati in base ai consumi tipici di una caldaia. Se i consumi della tua caldaia sono diversi, puoi regolare le soglie nella configurazione dell'integrazione.
 
 ## Changelog
+### [1.0.6] - 2023-10-30
+### Fixed
+- Correzione della logica di determinazione dello stato Riscaldamento: ora la caldaia è in Riscaldamento solo quando il consumo è compreso tra la soglia Circolatore e la soglia Riscaldamento.
+- Aggiunto uno stato "Massima Potenza" per consumi superiori alla soglia Riscaldamento.
+- Migliorate le descrizioni delle soglie nei file di traduzione e nel README.md.
+
+### [1.0.5] - 2023-10-25
+### Improved
+- Migliorate le descrizioni dei campi di configurazione delle soglie di consumo per renderle più chiare e user-friendly.
+- Aggiunte descrizioni dettagliate nel README.md per la configurazione delle soglie.
+
 ### [1.0.4] - 2023-10-25
 ### Added
 - Aggiunta un'entità di stato per la caldaia, con icone dinamiche e stati personalizzati:
