@@ -2,7 +2,11 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.core import callback
 from homeassistant.helpers import selector
-from .const import DOMAIN, CONF_NAME, CONF_TEMP_ACS, CONF_TEMP_ACF, CONF_TEMP_MANDATA, CONF_TEMP_RITORNO, CONF_TEMP_FUMI, CONF_CONSUMO_ELETTRICO
+from .const import (
+    DOMAIN, CONF_NAME, CONF_TEMP_ACS, CONF_TEMP_ACF, CONF_TEMP_MANDATA, CONF_TEMP_RITORNO, CONF_TEMP_FUMI, CONF_CONSUMO_ELETTRICO,
+    CONF_STANDBY_THRESHOLD, CONF_ACS_THRESHOLD, CONF_CIRCOLATORE_THRESHOLD, CONF_RISCALDAMENTO_THRESHOLD,
+    DEFAULT_STANDBY_THRESHOLD, DEFAULT_ACS_THRESHOLD, DEFAULT_CIRCOLATORE_THRESHOLD, DEFAULT_RISCALDAMENTO_THRESHOLD
+)
 
 class CaldaiaSmartConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Caldaia Smart."""
@@ -51,6 +55,26 @@ class CaldaiaSmartConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     CONF_CONSUMO_ELETTRICO,
                     description={"it": "Seleziona il sensore per il Consumo Elettrico Caldaia.", "en": "Select the sensor for the Boiler Power Consumption."}
                 ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
+                vol.Optional(
+                    CONF_STANDBY_THRESHOLD,
+                    default=DEFAULT_STANDBY_THRESHOLD,
+                    description={"it": "Soglia di consumo per lo stato Standby (W).", "en": "Power threshold for Standby state (W)."}
+                ): vol.Coerce(float),
+                vol.Optional(
+                    CONF_ACS_THRESHOLD,
+                    default=DEFAULT_ACS_THRESHOLD,
+                    description={"it": "Soglia di consumo per lo stato ACS (W).", "en": "Power threshold for ACS state (W)."}
+                ): vol.Coerce(float),
+                vol.Optional(
+                    CONF_CIRCOLATORE_THRESHOLD,
+                    default=DEFAULT_CIRCOLATORE_THRESHOLD,
+                    description={"it": "Soglia di consumo per lo stato Circolatore (W).", "en": "Power threshold for Circolatore state (W)."}
+                ): vol.Coerce(float),
+                vol.Optional(
+                    CONF_RISCALDAMENTO_THRESHOLD,
+                    default=DEFAULT_RISCALDAMENTO_THRESHOLD,
+                    description={"it": "Soglia di consumo per lo stato Riscaldamento (W).", "en": "Power threshold for Riscaldamento state (W)."}
+                ): vol.Coerce(float),
             }),
             errors=errors,
         )
@@ -77,34 +101,24 @@ class CaldaiaSmartOptionsFlow(config_entries.OptionsFlow):
             step_id="init",
             data_schema=vol.Schema({
                 vol.Optional(
-                    CONF_TEMP_ACS,
-                    default=self.config_entry.data.get(CONF_TEMP_ACS),
-                    description={"it": "Seleziona il sensore per la Temperatura Acqua Calda Sanitaria.", "en": "Select the sensor for the Hot Water Temperature."}
-                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
+                    CONF_STANDBY_THRESHOLD,
+                    default=self.config_entry.options.get(CONF_STANDBY_THRESHOLD, DEFAULT_STANDBY_THRESHOLD),
+                    description={"it": "Soglia di consumo per lo stato Standby (W).", "en": "Power threshold for Standby state (W)."}
+                ): vol.Coerce(float),
                 vol.Optional(
-                    CONF_TEMP_ACF,
-                    default=self.config_entry.data.get(CONF_TEMP_ACF),
-                    description={"it": "Seleziona il sensore per la Temperatura Acqua Fredda Sanitaria.", "en": "Select the sensor for the Cold Water Temperature."}
-                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
+                    CONF_ACS_THRESHOLD,
+                    default=self.config_entry.options.get(CONF_ACS_THRESHOLD, DEFAULT_ACS_THRESHOLD),
+                    description={"it": "Soglia di consumo per lo stato ACS (W).", "en": "Power threshold for ACS state (W)."}
+                ): vol.Coerce(float),
                 vol.Optional(
-                    CONF_TEMP_MANDATA,
-                    default=self.config_entry.data.get(CONF_TEMP_MANDATA),
-                    description={"it": "Seleziona il sensore per la Temperatura Mandata Riscaldamento.", "en": "Select the sensor for the Heating Supply Temperature."}
-                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
+                    CONF_CIRCOLATORE_THRESHOLD,
+                    default=self.config_entry.options.get(CONF_CIRCOLATORE_THRESHOLD, DEFAULT_CIRCOLATORE_THRESHOLD),
+                    description={"it": "Soglia di consumo per lo stato Circolatore (W).", "en": "Power threshold for Circolatore state (W)."}
+                ): vol.Coerce(float),
                 vol.Optional(
-                    CONF_TEMP_RITORNO,
-                    default=self.config_entry.data.get(CONF_TEMP_RITORNO),
-                    description={"it": "Seleziona il sensore per la Temperatura Ritorno Riscaldamento.", "en": "Select the sensor for the Heating Return Temperature."}
-                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
-                vol.Optional(
-                    CONF_TEMP_FUMI,
-                    default=self.config_entry.data.get(CONF_TEMP_FUMI),
-                    description={"it": "Seleziona il sensore per la Temperatura Fumi Caldaia.", "en": "Select the sensor for the Flue Gas Temperature."}
-                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
-                vol.Optional(
-                    CONF_CONSUMO_ELETTRICO,
-                    default=self.config_entry.data.get(CONF_CONSUMO_ELETTRICO),
-                    description={"it": "Seleziona il sensore per il Consumo Elettrico Caldaia.", "en": "Select the sensor for the Boiler Power Consumption."}
-                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
+                    CONF_RISCALDAMENTO_THRESHOLD,
+                    default=self.config_entry.options.get(CONF_RISCALDAMENTO_THRESHOLD, DEFAULT_RISCALDAMENTO_THRESHOLD),
+                    description={"it": "Soglia di consumo per lo stato Riscaldamento (W).", "en": "Power threshold for Riscaldamento state (W)."}
+                ): vol.Coerce(float),
             }),
         )
