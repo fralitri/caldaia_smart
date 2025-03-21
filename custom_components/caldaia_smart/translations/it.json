@@ -6,12 +6,12 @@
         "description": "Configura i sensori della tua caldaia.",
         "data": {
           "name": "Nome della caldaia",
-          "temp_acs": "Temperatura ACS",
-          "temp_acf": "Temperatura ACF",
-          "temp_mandata": "Temperatura di mandata",
-          "temp_ritorno": "Temperatura di ritorno",
-          "temp_fumi": "Temperatura dei fumi",
-          "consumo_elettrico": "Consumo elettrico"
+          "temp_acs": "Temperatura Acqua Calda Sanitaria",
+          "temp_acf": "Temperatura Acqua Fredda Sanitaria",
+          "temp_mandata": "Temperatura Mandata Riscaldamento",
+          "temp_ritorno": "Temperatura Ritorno Riscaldamento",
+          "temp_fumi": "Temperatura Fumi Caldaia",
+          "consumo_elettrico": "Consumo Elettrico Caldaia"
         }
       }
     },
