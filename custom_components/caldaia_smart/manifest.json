@@ -1,7 +1,7 @@
 {
   "domain": "caldaia_smart",
   "name": "Caldaia Smart",
-  "version": "1.0.7",  // Aggiorna la versione
+  "version": "1.0.7",  // Usa un formato semantico valido (es. 1.0.7)
   "documentation": "https://github.com/fralitri/caldaia_smart",
   "dependencies": [],
   "codeowners": ["@fralitri"],
