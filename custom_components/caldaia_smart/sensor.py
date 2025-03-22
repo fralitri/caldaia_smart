@@ -1,5 +1,9 @@
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.device_registry import DeviceEntryType
+from homeassistant.const import Platform
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
 from .const import (
     DOMAIN, CONF_NAME, CONF_CONSUMO_ELETTRICO,
     CONF_STANDBY_THRESHOLD, CONF_ACS_THRESHOLD, CONF_CIRCOLATORE_THRESHOLD, CONF_RISCALDAMENTO_THRESHOLD,
@@ -65,3 +69,30 @@ class CaldaiaSmartStatoSensor(Entity):
         else:
             self._state = "Massima Potenza"
             self._icon = "mdi:alert"
+
+async def async_setup_entry(
+    hass: HomeAssistant,
+    config_entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
+    """Set up the Caldaia Smart sensor platform."""
+    # Recupera i dati di configurazione
+    consumo_elettrico = config_entry.data[CONF_CONSUMO_ELETTRICO]
+    standby_threshold = config_entry.data.get(CONF_STANDBY_THRESHOLD, 20.0)
+    acs_threshold = config_entry.data.get(CONF_ACS_THRESHOLD, 60.0)
+    circolatore_threshold = config_entry.data.get(CONF_CIRCOLATORE_THRESHOLD, 85.0)
+    riscaldamento_threshold = config_entry.data.get(CONF_RISCALDAMENTO_THRESHOLD, 130.0)
+
+    # Crea l'entità Stato Caldaia
+    stato_sensor = CaldaiaSmartStatoSensor(
+        hass,
+        consumo_elettrico,
+        standby_threshold,
+        acs_threshold,
+        circolatore_threshold,
+        riscaldamento_threshold,
+        config_entry.entry_id
+    )
+
+    # Aggiungi l'entità a Home Assistant
+    async_add_entities([stato_sensor])
