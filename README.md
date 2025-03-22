@@ -2,6 +2,9 @@
 
 Questa integrazione permette di raggruppare i sensori di una caldaia (ad esempio, temperatura ACS, ACF, mandata, ritorno, fumi e consumo elettrico) sotto un unico dispositivo logico in Home Assistant. Inoltre, include un'entità di stato che indica lo stato attuale della caldaia (Standby, ACS, Circolatore, Riscaldamento, Massima Potenza) basandosi sul consumo elettrico.
 
+**Compatibilità:**
+- Home Assistant 2025.3.4 o superiore.
+
 ## Installazione tramite HACS
 1. Aggiungi questo repository a HACS:
    - Vai su **HACS > Integrations > Explore & Add Repositories**.
@@ -34,6 +37,10 @@ Lo stato della caldaia viene determinato in base al consumo elettrico. Ecco come
 L'entità **Stato Caldaia** è ora più reattiva grazie a un listener che aggiorna lo stato ogni volta che il valore del sensore di consumo elettrico cambia.
 
 ## Changelog
+### [1.0.9] - 2025-03-22
+### Added
+- Aggiunta la possibilità di modificare tutti i campi (nome del dispositivo, sensori e soglie) durante la configurazione avanzata.
+
 ### [1.0.8] - 2025-03-22
 ### Added
 - Aggiunto un listener per aggiornamenti in tempo reale dello stato della caldaia.
@@ -56,30 +63,4 @@ L'entità **Stato Caldaia** è ora più reattiva grazie a un listener che aggior
 
 ### [1.0.5] - 2025-03-19
 ### Improved
-- Migliorate le descrizioni dei campi di configurazione delle soglie di consumo.
-
-### [1.0.4] - 2025-03-18
-### Added
-- Aggiunta un'entità di stato per la caldaia, con icone dinamiche e stati personalizzati.
-- Configurazione delle soglie di consumo per determinare lo stato della caldaia.
-
-### [1.0.3] - 2025-03-17
-### Fixed
-- Corrette le descrizioni dei campi nel form di configurazione.
-
-### [1.0.2] - 2025-03-16
-### Added
-- Aggiunte traduzioni in italiano per i testi dell'interfaccia utente.
-- Migliorate le descrizioni user-friendly nei campi del form di configurazione.
-
-### [1.0.1] - 2025-03-15
-### Fixed
-- Corretto il bug che impediva il caricamento del Config Flow.
-- Aggiunte descrizioni user-friendly e menu a discesa per la selezione delle entità.
-
-### [1.0.0] - 2025-03-14
-### Added
-- Prima versione dell'integrazione.
-
-## Supporto
-Per problemi o richieste, apri un'issue su GitHub.
+- Migliorate
