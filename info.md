@@ -26,12 +26,12 @@ Lo stato della caldaia viene determinato in base al consumo elettrico. Ecco come
 - **Massima Potenza**: La caldaia è in modalità Massima Potenza quando il consumo supera **130W**.
 
 **Changelog:**
-- **1.0.8**: Aggiunto listener per aggiornamenti in tempo reale. Cambiate le icone per gli stati.
-- **1.0.7**: Correzione del file `manifest.json` e miglioramenti alla configurazione.
-- **1.0.6**: Correzione della logica di determinazione dello stato Riscaldamento.
-- **1.0.5**: Migliorate le descrizioni dei campi di configurazione.
-- **1.0.4**: Aggiunta entità di stato e configurazione delle soglie di consumo.
-- **1.0.3**: Corrette le descrizioni dei campi nel form di configurazione.
-- **1.0.2**: Aggiunte traduzioni in italiano e migliorate le descrizioni.
-- **1.0.1**: Corretto bug e aggiunte descrizioni user-friendly.
-- **1.0.0**: Prima versione.
+- **1.0.8 (2025-03-22)**: Aggiunto listener per aggiornamenti in tempo reale. Cambiate le icone per gli stati.
+- **1.0.7 (2025-03-21)**: Corretto errore nel file `manifest.json`.
+- **1.0.6 (2025-03-20)**: Correzione della logica di determinazione dello stato Riscaldamento.
+- **1.0.5 (2025-03-19)**: Migliorate le descrizioni dei campi di configurazione.
+- **1.0.4 (2025-03-18)**: Aggiunta entità di stato e configurazione delle soglie di consumo.
+- **1.0.3 (2025-03-17)**: Corrette le descrizioni dei campi nel form di configurazione.
+- **1.0.2 (2025-03-16)**: Aggiunte traduzioni in italiano e migliorate le descrizioni.
+- **1.0.1 (2025-03-15)**: Corretto bug e aggiunte descrizioni user-friendly.
+- **1.0.0 (2025-03-14)**: Prima versione.
