@@ -97,9 +97,45 @@ class CaldaiaSmartOptionsFlow(config_entries.OptionsFlow):
         if user_input is not None:
             return self.async_create_entry(title="", data=user_input)
 
+        # Mostra tutti i campi configurabili
         return self.async_show_form(
             step_id="init",
             data_schema=vol.Schema({
+                vol.Required(
+                    CONF_NAME,
+                    default=self.config_entry.data.get(CONF_NAME),
+                    description={"it": "Nome della caldaia.", "en": "Boiler name."}
+                ): str,
+                vol.Required(
+                    CONF_TEMP_ACS,
+                    default=self.config_entry.data.get(CONF_TEMP_ACS),
+                    description={"it": "Sensore per la Temperatura Acqua Calda Sanitaria.", "en": "Sensor for Hot Water Temperature."}
+                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
+                vol.Required(
+                    CONF_TEMP_ACF,
+                    default=self.config_entry.data.get(CONF_TEMP_ACF),
+                    description={"it": "Sensore per la Temperatura Acqua Fredda Sanitaria.", "en": "Sensor for Cold Water Temperature."}
+                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
+                vol.Required(
+                    CONF_TEMP_MANDATA,
+                    default=self.config_entry.data.get(CONF_TEMP_MANDATA),
+                    description={"it": "Sensore per la Temperatura Mandata Riscaldamento.", "en": "Sensor for Heating Supply Temperature."}
+                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
+                vol.Required(
+                    CONF_TEMP_RITORNO,
+                    default=self.config_entry.data.get(CONF_TEMP_RITORNO),
+                    description={"it": "Sensore per la Temperatura Ritorno Riscaldamento.", "en": "Sensor for Heating Return Temperature."}
+                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
+                vol.Required(
+                    CONF_TEMP_FUMI,
+                    default=self.config_entry.data.get(CONF_TEMP_FUMI),
+                    description={"it": "Sensore per la Temperatura Fumi Caldaia.", "en": "Sensor for Flue Gas Temperature."}
+                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
+                vol.Required(
+                    CONF_CONSUMO_ELETTRICO,
+                    default=self.config_entry.data.get(CONF_CONSUMO_ELETTRICO),
+                    description={"it": "Sensore per il Consumo Elettrico Caldaia.", "en": "Sensor for Boiler Power Consumption."}
+                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
                 vol.Optional(
                     CONF_STANDBY_THRESHOLD,
                     default=self.config_entry.options.get(CONF_STANDBY_THRESHOLD, DEFAULT_STANDBY_THRESHOLD),
