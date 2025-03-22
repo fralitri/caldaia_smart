@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.8] - 2023-10-31
+### Added
+- Aggiunto un listener per aggiornamenti in tempo reale dello stato della caldaia.
+- Migliorata la reattività dell'entità Stato Caldaia.
+### Changed
+- Cambiate le icone per gli stati:
+  - Standby: `mdi:power-standby`
+  - ACS: `mdi:water-pump`
+  - Circolatore: `mdi:pump`
+
 ## [1.0.7] - 2023-10-30
 ### Fixed
 - Corretto errore di sintassi nel file `__init__.py` che impediva il caricamento dell'integrazione.
