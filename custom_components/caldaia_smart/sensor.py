@@ -3,7 +3,8 @@ from homeassistant.helpers.device_registry import DeviceEntryType
 from homeassistant.const import Platform
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.event import async_track_state_change
 from .const import (
     DOMAIN, CONF_NAME, CONF_CONSUMO_ELETTRICO,
     CONF_STANDBY_THRESHOLD, CONF_ACS_THRESHOLD, CONF_CIRCOLATORE_THRESHOLD, CONF_RISCALDAMENTO_THRESHOLD,
@@ -23,7 +24,7 @@ class CaldaiaSmartStatoSensor(Entity):
         self._riscaldamento_threshold = riscaldamento_threshold
         self._device_id = device_id
         self._state = None
-        self._icon = "mdi:power-plug-off"
+        self._icon = "mdi:power-standby"  # Icona predefinita per lo standby
 
     @property
     def name(self):
@@ -50,19 +51,33 @@ class CaldaiaSmartStatoSensor(Entity):
             "model": "Generic",
         }
 
-    def update(self):
-        """Fetch new state data for the sensor."""
+    async def async_added_to_hass(self):
+        """Call when entity is added to hass."""
+        @callback
+        def async_state_changed_listener(entity_id, old_state, new_state):
+            """Handle state changes."""
+            self._update_state()
+            self.async_write_ha_state()
+
+        self.async_on_remove(
+            async_track_state_change(
+                self.hass, self._entity_id, async_state_changed_listener
+            )
+        )
+
+    def _update_state(self):
+        """Update the state of the sensor."""
         consumo = float(self.hass.states.get(self._entity_id).state)
 
         if consumo < self._standby_threshold:
             self._state = STATO_STANDBY
-            self._icon = "mdi:power-plug-off"
+            self._icon = "mdi:power-standby"  # Nuova icona per lo standby
         elif consumo < self._acs_threshold:
             self._state = STATO_ACS
-            self._icon = "mdi:water-boiler"
+            self._icon = "mdi:water-pump"  # Nuova icona per ACS
         elif consumo < self._circolatore_threshold:
             self._state = STATO_CIRCOLATORE
-            self._icon = "mdi:pipe"
+            self._icon = "mdi:pump"  # Nuova icona per il circolatore
         elif consumo < self._riscaldamento_threshold:
             self._state = STATO_RISCALDAMENTO
             self._icon = "mdi:radiator"
