@@ -2,6 +2,9 @@
 
 Raggruppa i sensori di una caldaia sotto un unico dispositivo logico in Home Assistant.
 
+**Compatibilità:**
+- Home Assistant 2025.3.4 o superiore.
+
 **Funzionalità:**
 - Configurazione guidata tramite UI.
 - Supporto per più caldaie.
@@ -26,6 +29,7 @@ Lo stato della caldaia viene determinato in base al consumo elettrico. Ecco come
 - **Massima Potenza**: La caldaia è in modalità Massima Potenza quando il consumo supera **130W**.
 
 **Changelog:**
+- **1.0.9 (2025-03-22)**: Aggiunta la possibilità di modificare tutti i campi (nome del dispositivo, sensori e soglie) durante la configurazione avanzata.
 - **1.0.8 (2025-03-22)**: Aggiunto listener per aggiornamenti in tempo reale. Cambiate le icone per gli stati.
 - **1.0.7 (2025-03-21)**: Corretto errore nel file `manifest.json`.
 - **1.0.6 (2025-03-20)**: Correzione della logica di determinazione dello stato Riscaldamento.
