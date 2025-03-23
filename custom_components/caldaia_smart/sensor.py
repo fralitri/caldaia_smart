@@ -1,8 +1,8 @@
+from homeassistant.components.history_stats.sensor import HistoryStatsSensor
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.event import async_track_state_change
 from homeassistant.core import callback
-from homeassistant.components.history_stats.sensor import HistoryStatsSensor
 from .const import (
     DOMAIN, CONF_NAME, CONF_CONSUMO_ELETTRICO,
     CONF_STANDBY_THRESHOLD, CONF_ACS_THRESHOLD, CONF_CIRCOLATORE_THRESHOLD, CONF_RISCALDAMENTO_THRESHOLD,
@@ -100,10 +100,12 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
     # Crea l'entità Tempo ACS Ultime 24 Ore utilizzando History Stats
     acs_time_sensor = HistoryStatsSensor(
-        sensor_type="time",  # Tipo di sensore (time per il tempo trascorso)
-        name=sensor_name,  # Nome del sensore
-        unique_id=unique_id,  # ID univoco del sensore
-        source_entity_id=stato_sensor.entity_id,  # ID dell'entità Stato Caldaia
+        hass=hass,
+        name=sensor_name,
+        entity_platform="sensor",
+        entity_id=stato_sensor.entity_id,
+        state="on",  # Stato da tracciare (ad esempio, "on" per ACS)
+        type="time",  # Tipo di sensore (time per il tempo trascorso)
         start="{{ now().replace(hour=0, minute=0, second=0) }}",  # Inizio dell'intervallo
         end="{{ now() }}",  # Fine dell'intervallo
         duration={"hours": 24}  # Durata dell'intervallo (24 ore)
