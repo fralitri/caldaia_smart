@@ -104,7 +104,6 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         name=sensor_name,  # Nome del sensore
         unique_id=unique_id,  # ID univoco del sensore
         source_entity_id=stato_sensor.entity_id,  # ID dell'entità Stato Caldaia
-        state=STATO_ACS,  # Stato da monitorare (ACS)
         start="{{ now().replace(hour=0, minute=0, second=0) }}",  # Inizio dell'intervallo
         end="{{ now() }}",  # Fine dell'intervallo
         duration={"hours": 24}  # Durata dell'intervallo (24 ore)
