@@ -1,9 +1,9 @@
-from homeassistant.components.sensor import SensorEntity
 from homeassistant.helpers.entity import Entity
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.event import async_track_state_change
-from homeassistant.util import dt as dt_util
+from homeassistant.const import CONF_NAME
 from .const import (
-    DOMAIN, CONF_NAME, CONF_CONSUMO_ELETTRICO,
+    DOMAIN, CONF_CONSUMO_ELETTRICO,
     CONF_STANDBY_THRESHOLD, CONF_ACS_THRESHOLD, CONF_CIRCOLATORE_THRESHOLD, CONF_RISCALDAMENTO_THRESHOLD,
     STATO_STANDBY, STATO_ACS, STATO_CIRCOLATORE, STATO_RISCALDAMENTO
 )
@@ -22,6 +22,12 @@ class CaldaiaSmartStatoSensor(Entity):
         self._device_id = device_id
         self._state = None
         self._icon = "mdi:power-standby"
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, device_id)},
+            name="Caldaia Smart",  # Questo verrà sovrascritto dal nome inserito dall'utente
+            manufacturer="Caldaia Smart",
+            model="Generic",
+        )
 
     @property
     def name(self):
@@ -37,16 +43,6 @@ class CaldaiaSmartStatoSensor(Entity):
     def icon(self):
         """Return the icon of the sensor."""
         return self._icon
-
-    @property
-    def device_info(self):
-        """Return device info."""
-        return {
-            "identifiers": {(DOMAIN, self._device_id)},
-            "name": "Caldaia Smart",
-            "manufacturer": "Caldaia Smart",
-            "model": "Generic",
-        }
 
     async def async_added_to_hass(self):
         """Call when entity is added to hass."""
@@ -82,7 +78,7 @@ class CaldaiaSmartStatoSensor(Entity):
             self._state = "Massima Potenza"
             self._icon = "mdi:alert"
 
-class CaldaiaSmartACSTimeSensor(SensorEntity):
+class CaldaiaSmartACSTimeSensor(Entity):
     """Representation of a Caldaia Smart ACS Time Sensor."""
 
     def __init__(self, hass, stato_caldaia_entity_id, device_id):
@@ -92,6 +88,12 @@ class CaldaiaSmartACSTimeSensor(SensorEntity):
         self._device_id = device_id
         self._state = 0  # Tempo in ore
         self._icon = "mdi:clock"
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, device_id)},
+            name="Caldaia Smart",  # Questo verrà sovrascritto dal nome inserito dall'utente
+            manufacturer="Caldaia Smart",
+            model="Generic",
+        )
 
     @property
     def name(self):
@@ -107,16 +109,6 @@ class CaldaiaSmartACSTimeSensor(SensorEntity):
     def icon(self):
         """Return the icon of the sensor."""
         return self._icon
-
-    @property
-    def device_info(self):
-        """Return device info."""
-        return {
-            "identifiers": {(DOMAIN, self._device_id)},
-            "name": "Caldaia Smart",
-            "manufacturer": "Caldaia Smart",
-            "model": "Generic",
-        }
 
     async def async_added_to_hass(self):
         """Call when entity is added to hass."""
