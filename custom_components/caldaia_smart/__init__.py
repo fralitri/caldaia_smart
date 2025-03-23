@@ -2,7 +2,7 @@ import logging
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.typing import ConfigType
 from homeassistant import config_entries
-from homeassistant.helpers import device_registry as dr  # Aggiunto
+from homeassistant.helpers import device_registry as dr
 from homeassistant.const import Platform
 from .const import DOMAIN, CONF_NAME
 
@@ -23,7 +23,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: config_entries.Co
     hass.data[DOMAIN][config_entry.entry_id] = config_entry.data
 
     # Crea il dispositivo principale
-    device_registry = dr.async_get(hass)  # Correzione: async_get non richiede argomenti
+    device_registry = dr.async_get(hass)
     device_registry.async_get_or_create(
         config_entry_id=config_entry.entry_id,
         identifiers={(DOMAIN, config_entry.entry_id)},
