@@ -3,7 +3,7 @@
   "name": "Caldaia Smart",
   "version": "1.0.9",
   "documentation": "https://github.com/fralitri/caldaia_smart",
-  "dependencies": [],
+  "dependencies": ["history_stats"],
   "codeowners": ["@fralitri"],
   "requirements": [],
   "iot_class": "local_polling",
