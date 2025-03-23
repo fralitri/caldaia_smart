@@ -13,6 +13,7 @@ CONF_ACS_THRESHOLD = "acs_threshold"
 CONF_CIRCOLATORE_THRESHOLD = "circolatore_threshold"
 CONF_RISCALDAMENTO_THRESHOLD = "riscaldamento_threshold"
 
+# Valori predefiniti per le soglie
 DEFAULT_STANDBY_THRESHOLD = 20.0
 DEFAULT_ACS_THRESHOLD = 60.0
 DEFAULT_CIRCOLATORE_THRESHOLD = 85.0
