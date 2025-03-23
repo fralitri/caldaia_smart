@@ -1,5 +1,5 @@
 from homeassistant.helpers.entity import Entity
-from homeassistant.helpers.device_registry import DeviceInfo  # Aggiunto
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.event import async_track_state_change
 from homeassistant.const import CONF_NAME
 from .const import (
@@ -22,7 +22,7 @@ class CaldaiaSmartStatoSensor(Entity):
         self._device_id = device_id
         self._state = None
         self._icon = "mdi:power-standby"
-        self._attr_device_info = DeviceInfo(  # Aggiunto
+        self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, device_id)},
             name="Caldaia Smart",  # Questo verrà sovrascritto dal nome inserito dall'utente
             manufacturer="Caldaia Smart",
@@ -88,7 +88,7 @@ class CaldaiaSmartACSTimeSensor(Entity):
         self._device_id = device_id
         self._state = 0  # Tempo in ore
         self._icon = "mdi:clock"
-        self._attr_device_info = DeviceInfo(  # Aggiunto
+        self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, device_id)},
             name="Caldaia Smart",  # Questo verrà sovrascritto dal nome inserito dall'utente
             manufacturer="Caldaia Smart",
