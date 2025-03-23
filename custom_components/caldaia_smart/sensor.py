@@ -98,22 +98,17 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     sensor_name = f"{config_entry.data[CONF_NAME]} Tempo ACS Ultime 24 Ore"
     unique_id = f"{config_entry.entry_id}_acs_time"  # Genera un unique_id univoco
 
-    # Crea l'entità Tempo ACS Ultime 24 Ore utilizzando History Stats
-    acs_time_sensor = HistoryStatsSensor(
-        hass=hass,
-        name=sensor_name,
-        entity_platform="sensor",
-        entity_id=stato_sensor.entity_id,
-        state="on",  # Stato da tracciare (ad esempio, "on" per ACS)
-        type="time",  # Tipo di sensore (time per il tempo trascorso)
-        start="{{ now().replace(hour=0, minute=0, second=0) }}",  # Inizio dell'intervallo
-        end="{{ now() }}",  # Fine dell'intervallo
-        duration={"hours": 24}  # Durata dell'intervallo (24 ore)
-    )
-    acs_time_sensor.device_info = DeviceInfo(
-        identifiers={(DOMAIN, config_entry.entry_id)},
-        name=config_entry.data[CONF_NAME],  # Usa il nome inserito dall'utente
-        manufacturer="Caldaia Smart",
-        model="Generic",
-    )
-    async_add_entities([acs_time_sensor])
+    # Configurazione del sensore History Stats
+    history_stats_config = {
+        "platform": "history_stats",
+        "name": sensor_name,
+        "entity_id": stato_sensor.entity_id,
+        "state": "on",  # Stato da tracciare (ad esempio, "on" per ACS)
+        "type": "time",  # Tipo di sensore (time per il tempo trascorso)
+        "start": "{{ now().replace(hour=0, minute=0, second=0) }}",  # Inizio dell'intervallo
+        "end": "{{ now() }}",  # Fine dell'intervallo
+        "duration": {"hours": 24}  # Durata dell'intervallo (24 ore)
+    }
+
+    # Aggiungi il sensore History Stats
+    await hass.config_entries.async_forward_entry_setup(config_entry, "sensor", history_stats_config)
