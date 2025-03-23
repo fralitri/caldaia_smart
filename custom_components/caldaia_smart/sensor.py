@@ -1,12 +1,14 @@
+from datetime import timedelta
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.event import async_track_state_change
 from homeassistant.core import callback
+from homeassistant.util import dt as dt_util
 from .const import (
     DOMAIN, CONF_CONSUMO_ELETTRICO,
     CONF_STANDBY_THRESHOLD, CONF_ACS_THRESHOLD, CONF_CIRCOLATORE_THRESHOLD, CONF_RISCALDAMENTO_THRESHOLD,
     STATO_STANDBY, STATO_ACS, STATO_CIRCOLATORE, STATO_RISCALDAMENTO,
-    DEFAULT_STANDBY_THRESHOLD, DEFAULT_ACS_THRESHOLD, DEFAULT_CIRCOLATORE_THRESHOLD, DEFAULT_RISCALDAMENTO_THRESHOLD  # Importazione corretta
+    DEFAULT_STANDBY_THRESHOLD, DEFAULT_ACS_THRESHOLD, DEFAULT_CIRCOLATORE_THRESHOLD, DEFAULT_RISCALDAMENTO_THRESHOLD
 )
 
 class CaldaiaSmartStatoSensor(Entity):
@@ -95,6 +97,7 @@ class CaldaiaSmartACSTimeSensor(Entity):
             manufacturer="Caldaia Smart",
             model="Generic",
         )
+        self._last_update = None  # Memorizza l'ultimo aggiornamento
 
     @property
     def name(self):
@@ -127,14 +130,27 @@ class CaldaiaSmartACSTimeSensor(Entity):
 
     def _update_state(self):
         """Update the state of the sensor."""
-        # Calcola il tempo trascorso in stato ACS nelle ultime 24 ore
-        history = self.hass.states.get(self._stato_caldaia_entity_id).attributes.get("history", [])
-        acs_time = sum(
-            (end - start).total_seconds() / 3600  # Converti secondi in ore
-            for start, end in history
-            if self.hass.states.get(self._stato_caldaia_entity_id, start).state == STATO_ACS
-        )
-        self._state = round(acs_time, 2)  # Arrotonda a 2 decimali
+        now = dt_util.utcnow()
+        stato_caldaia = self.hass.states.get(self._stato_caldaia_entity_id)
+
+        if stato_caldaia is None:
+            return
+
+        # Se lo stato è ACS, calcola il tempo trascorso
+        if stato_caldaia.state == STATO_ACS:
+            if self._last_update is not None:
+                delta = now - self._last_update
+                self._state += delta.total_seconds() / 3600  # Converti secondi in ore
+            self._last_update = now
+        else:
+            self._last_update = None
+
+        # Resetta il tempo ogni 24 ore
+        if now.hour == 0 and now.minute == 0 and now.second == 0:
+            self._state = 0
+
+        # Arrotonda il tempo a 2 decimali
+        self._state = round(self._state, 2)
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up the Caldaia Smart sensor platform."""
