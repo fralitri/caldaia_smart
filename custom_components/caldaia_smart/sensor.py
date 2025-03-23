@@ -94,17 +94,19 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     )
     async_add_entities([stato_sensor])
 
+    # Configurazione del sensore History Stats per il tempo ACS
+    history_stats_config = {
+        "name": f"{config_entry.data[CONF_NAME]} Tempo ACS Ultime 24 Ore",
+        "entity_id": stato_sensor.entity_id,
+        "state": STATO_ACS,
+        "type": "time",
+        "start": "{{ now().replace(hour=0, minute=0, second=0) }}",
+        "end": "{{ now() }}",
+        "duration": {"hours": 24}
+    }
+
     # Crea l'entità Tempo ACS Ultime 24 Ore utilizzando History Stats
-    acs_time_sensor = HistoryStatsSensor(
-        hass,
-        name=f"{config_entry.data[CONF_NAME]} Tempo ACS Ultime 24 Ore",
-        entity_id=stato_sensor.entity_id,
-        state=STATO_ACS,
-        type="time",
-        start="{{ now().replace(hour=0, minute=0, second=0) }}",
-        end="{{ now() }}",
-        duration={"hours": 24}
-    )
+    acs_time_sensor = HistoryStatsSensor(hass, history_stats_config)
     acs_time_sensor.device_info = DeviceInfo(
         identifiers={(DOMAIN, config_entry.entry_id)},
         name=config_entry.data[CONF_NAME],  # Usa il nome inserito dall'utente
