@@ -1,6 +1,6 @@
 import voluptuous as vol
 from homeassistant import config_entries
-from homeassistant.core import callback  # Importazione corretta di callback
+from homeassistant.core import callback  # Aggiunto
 from homeassistant.helpers import selector
 from .const import (
     DOMAIN, CONF_NAME, CONF_TEMP_ACS, CONF_TEMP_ACF, CONF_TEMP_MANDATA, CONF_TEMP_RITORNO, CONF_TEMP_FUMI, CONF_CONSUMO_ELETTRICO,
