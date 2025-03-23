@@ -2,7 +2,7 @@ import logging
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.typing import ConfigType
 from homeassistant import config_entries
-from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers import device_registry as dr  # Aggiunto
 from homeassistant.const import Platform
 from .const import DOMAIN, CONF_NAME
 
