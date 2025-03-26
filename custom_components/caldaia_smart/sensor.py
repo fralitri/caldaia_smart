@@ -2,18 +2,23 @@ from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.event import async_track_state_change
 from homeassistant.core import callback
-from homeassistant import config_entries
+from homeassistant.components.sensor import SensorEntity
+from homeassistant.util import dt as dt_util
+from datetime import timedelta
 from .const import (
     DOMAIN, CONF_NAME, CONF_CONSUMO_ELETTRICO,
-    CONF_STANDBY_THRESHOLD, CONF_ACS_THRESHOLD, CONF_CIRCOLATORE_THRESHOLD, CONF_RISCALDAMENTO_THRESHOLD,
+    CONF_STANDBY_THRESHOLD, CONF_ACS_THRESHOLD, 
+    CONF_CIRCOLATORE_THRESHOLD, CONF_RISCALDAMENTO_THRESHOLD,
     STATO_STANDBY, STATO_ACS, STATO_CIRCOLATORE, STATO_RISCALDAMENTO,
-    DEFAULT_STANDBY_THRESHOLD, DEFAULT_ACS_THRESHOLD, DEFAULT_CIRCOLATORE_THRESHOLD, DEFAULT_RISCALDAMENTO_THRESHOLD
+    DEFAULT_STANDBY_THRESHOLD, DEFAULT_ACS_THRESHOLD,
+    DEFAULT_CIRCOLATORE_THRESHOLD, DEFAULT_RISCALDAMENTO_THRESHOLD
 )
 
 class CaldaiaSmartStatoSensor(Entity):
-    """Representation of a Caldaia Smart Stato Sensor."""
-
-    def __init__(self, hass, consumo_elettrico, standby_threshold, acs_threshold, circolatore_threshold, riscaldamento_threshold, device_id):
+    """Sensor per lo stato della caldaia."""
+    
+    def __init__(self, hass, consumo_elettrico, standby_threshold, acs_threshold, 
+                 circolatore_threshold, riscaldamento_threshold, device_id):
         """Initialize the sensor."""
         self.hass = hass
         self._entity_id = consumo_elettrico
@@ -87,9 +92,68 @@ class CaldaiaSmartStatoSensor(Entity):
             self._state = "Massima Potenza"
             self._icon = "mdi:alert"
 
+class ACSDurationSensor(SensorEntity):
+    """Sensor per il tempo trascorso in modalità ACS."""
+    
+    def __init__(self, hass, config_entry, stato_sensor):
+        """Initialize the sensor."""
+        self._hass = hass
+        self._config_entry = config_entry
+        self._stato_sensor = stato_sensor
+        self._state = 0
+        self._attr_name = f"{config_entry.data[CONF_NAME]} Tempo ACS"
+        self._attr_unique_id = f"{config_entry.entry_id}_acs_time"
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, config_entry.entry_id)}
+        )
+        self._attr_unit_of_measurement = "h"
+        
+    async def async_update(self):
+        """Calculate time in ACS state."""
+        now = dt_util.now()
+        today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        
+        history_list = await self._hass.async_add_executor_job(
+            self._get_history,
+            today_start,
+            now,
+            self._stato_sensor.entity_id
+        )
+        
+        acs_time = timedelta()
+        prev_state = None
+        prev_time = today_start
+        
+        for item in history_list:
+            state = item.state
+            time = dt_util.parse_datetime(item.last_updated)
+            
+            if prev_state == STATO_ACS:
+                acs_time += time - prev_time
+                
+            prev_state = state
+            prev_time = time
+        
+        # Aggiungi il tempo dall'ultimo cambiamento di stato
+        if prev_state == STATO_ACS:
+            acs_time += now - prev_time
+            
+        self._state = round(acs_time.total_seconds() / 3600, 2)
+
+    def _get_history(self, start_time, end_time, entity_id):
+        """Get history from recorder."""
+        from homeassistant.components.recorder import history
+        return history.state_changes_during_period(
+            self._hass,
+            start_time,
+            end_time,
+            entity_id,
+            include_start_time_state=True
+        )
+
 async def async_setup_entry(hass, config_entry, async_add_entities):
-    """Set up the Caldaia Smart sensor platform."""
-    # Crea l'entità Stato Caldaia
+    """Set up the sensors."""
+    # Creazione del sensore stato
     stato_sensor = CaldaiaSmartStatoSensor(
         hass,
         config_entry.data[CONF_CONSUMO_ELETTRICO],
@@ -99,22 +163,8 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         config_entry.data.get(CONF_RISCALDAMENTO_THRESHOLD, DEFAULT_RISCALDAMENTO_THRESHOLD),
         config_entry.entry_id
     )
-    async_add_entities([stato_sensor])
-
-    # Configurazione del sensore History Stats per il tempo ACS
-    sensor_name = f"{config_entry.data[CONF_NAME]} Tempo ACS Ultime 24 Ore"
     
-    hass.async_create_task(
-        hass.config_entries.flow.async_init(
-            "history_stats",
-            context={"source": config_entries.SOURCE_IMPORT},
-            data={
-                "name": sensor_name,
-                "entity_id": stato_sensor.entity_id,
-                "state": STATO_ACS,
-                "type": "time",
-                "start": "{{ now().replace(hour=0, minute=0, second=0) }}",
-                "end": "{{ now() }}",
-            }
-        )
-    )
+    # Creazione del sensore durata ACS
+    acs_sensor = ACSDurationSensor(hass, config_entry, stato_sensor)
+    
+    async_add_entities([stato_sensor, acs_sensor])
