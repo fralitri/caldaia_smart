@@ -2,7 +2,7 @@ from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.event import async_track_state_change
 from homeassistant.core import callback
-from homeassistant.components.sensor import SensorEntity
+from homeassistant import config_entries
 import logging
 from .const import (
     DOMAIN, CONF_NAME, CONF_CONSUMO_ELETTRICO,
@@ -17,7 +17,7 @@ _LOGGER = logging.getLogger(__name__)
 
 class CaldaiaSmartStatoSensor(Entity):
     """Sensor per lo stato della caldaia."""
-    
+
     def __init__(self, hass, consumo_elettrico, standby_threshold, acs_threshold,
                  circolatore_threshold, riscaldamento_threshold, device_id):
         """Initialize the sensor."""
@@ -114,8 +114,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         "state": STATO_ACS,
         "type": "time",
         "start": "{{ now().replace(hour=0, minute=0, second=0) }}",
-        "end": "{{ now() }}",
-        "duration": {"hours": 24}
+        "end": "{{ now() }}"
     }
 
     # Aggiungi entità principale
