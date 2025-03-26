@@ -1,8 +1,8 @@
-from homeassistant.components.history_stats.sensor import HistoryStatsSensor
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.event import async_track_state_change
 from homeassistant.core import callback
+from homeassistant import config_entries
 from .const import (
     DOMAIN, CONF_NAME, CONF_CONSUMO_ELETTRICO,
     CONF_STANDBY_THRESHOLD, CONF_ACS_THRESHOLD, CONF_CIRCOLATORE_THRESHOLD, CONF_RISCALDAMENTO_THRESHOLD,
@@ -26,7 +26,7 @@ class CaldaiaSmartStatoSensor(Entity):
         self._icon = "mdi:power-standby"
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, device_id)},
-            name="Caldaia Smart",  # Questo verrà sovrascritto dal nome inserito dall'utente
+            name="Caldaia Smart",
             manufacturer="Caldaia Smart",
             model="Generic",
         )
@@ -62,7 +62,14 @@ class CaldaiaSmartStatoSensor(Entity):
 
     def _update_state(self):
         """Update the state of the sensor."""
-        consumo = float(self.hass.states.get(self._entity_id).state)
+        state = self.hass.states.get(self._entity_id)
+        if state is None or state.state in (None, "unknown", "unavailable"):
+            return
+
+        try:
+            consumo = float(state.state)
+        except ValueError:
+            return
 
         if consumo < self._standby_threshold:
             self._state = STATO_STANDBY
@@ -96,19 +103,18 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
     # Configurazione del sensore History Stats per il tempo ACS
     sensor_name = f"{config_entry.data[CONF_NAME]} Tempo ACS Ultime 24 Ore"
-    unique_id = f"{config_entry.entry_id}_acs_time"  # Genera un unique_id univoco
-
-    # Configurazione del sensore History Stats
-    history_stats_config = {
-        "platform": "history_stats",
-        "name": sensor_name,
-        "entity_id": stato_sensor.entity_id,
-        "state": "on",  # Stato da tracciare (ad esempio, "on" per ACS)
-        "type": "time",  # Tipo di sensore (time per il tempo trascorso)
-        "start": "{{ now().replace(hour=0, minute=0, second=0) }}",  # Inizio dell'intervallo
-        "end": "{{ now() }}",  # Fine dell'intervallo
-        "duration": {"hours": 24}  # Durata dell'intervallo (24 ore)
-    }
-
-    # Aggiungi il sensore History Stats
-    await hass.config_entries.async_forward_entry_setup(config_entry, "sensor", history_stats_config)
+    
+    hass.async_create_task(
+        hass.config_entries.flow.async_init(
+            "history_stats",
+            context={"source": config_entries.SOURCE_IMPORT},
+            data={
+                "name": sensor_name,
+                "entity_id": stato_sensor.entity_id,
+                "state": STATO_ACS,
+                "type": "time",
+                "start": "{{ now().replace(hour=0, minute=0, second=0) }}",
+                "end": "{{ now() }}",
+            }
+        )
+    )
